@@ -74,7 +74,11 @@ class Lexer:
             elif self.current_char == ')':
                 tokens.append(Token(TT_RPAREN))
                 self.advance()  
-        return tokens
+            else:
+                char = self.current_char
+                self.advance()
+                return [], IllegalCharError("'" + char + "'")
+        return tokens, None
 
         def make_number(self):
             num_str = ''
@@ -93,6 +97,11 @@ class Lexer:
             else:
                 return Token(TT_FLOAT, float(num_str))
 
-
-
+#######################
+#EJECUCION
+#######################
+def run(text):
+    lexer = Lexer(text)
+    tokens, error = lexer.make_tokens()
+    return tokens, error
 
