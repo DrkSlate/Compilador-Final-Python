@@ -11,7 +11,7 @@ class Error:
         self.error_name = error_name
         self.details = details
     def as_string(self):
-        result = f'{self.error_name}:{self.details}'
+        result = f'{self.error_name}: {self.details}'
         return result
 class IllegalCharError(Error):
     def __init__(self, details):
@@ -30,7 +30,7 @@ TT_LPAREN   =   'LPAREN'
 TT_RPAREN   =   'RPAREN'
 
 class Token:
-    def __init__(self, type_, value):
+    def __init__(self, type_, value=None):
         self.type = type_
         self.value = value
     def __repr__(self):
@@ -48,7 +48,7 @@ class Lexer:
         self.advance()
     def advance(self):
         self.pos += 1
-        self.current_char = self.text[pos] if self.pos < len(self.text) else None
+        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
     def make_tokens(self):
         tokens = []
         while self.current_char != None:
@@ -80,22 +80,22 @@ class Lexer:
                 return [], IllegalCharError("'" + char + "'")
         return tokens, None
 
-        def make_number(self):
-            num_str = ''
-            dot_count = 0
+    def make_number(self):
+         num_str = ''
+         dot_count = 0
 
-            while self.current_char != None and self.current_char in DIGITS + '.':
-                if self.current_char == '.':
-                    if dot_count == 1: break
-                    dot_count += 1
-                    num_str += '.'
-                else:
-                    num_str = self.current_char
-            
-            if dot_count == 0:
-                return Token(TT_INT, int(num_str))
-            else:
-                return Token(TT_FLOAT, float(num_str))
+         while self.current_char != None and self.current_char in DIGITS + '.':
+             if self.current_char == '.':
+                 if dot_count == 1: break
+                 dot_count += 1
+                 num_str += '.'
+             else:
+                   num_str += self.current_char
+             self.advance()
+         if dot_count == 0: 
+            return Token(TT_INT, int(num_str))
+         else:
+            return Token(TT_FLOAT, float(num_str))
 
 #######################
 #EJECUCION
