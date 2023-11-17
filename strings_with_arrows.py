@@ -6,7 +6,7 @@ def string_with_arrows(text, pos_start, pos_end):
     if idx_end < 0: idx_end = len(text)
 
     #Generación de cada linea
-    line_count = pos_end.ln - pos_start + 1
+    line_count = pos_end.ln - pos_start.ln + 1
     for i in range(line_count):
         #Calculo de las columnas
         line = text[idx_start:idx_end]
@@ -19,5 +19,6 @@ def string_with_arrows(text, pos_start, pos_end):
         idx_start = idx_end
         idx_end = text.find('\n', idx_start + 1)
         if idx_end < 0: idx_end = len(text)
+
     return result.replace('\t', '')
 
